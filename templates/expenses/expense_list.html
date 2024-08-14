@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Main Tables on the Left -->
+    <div class="col-md-7">
+        <h2 class="mt-4">My Expenses</h2>
+        <p>Total Amount: {{ total_user_amount }}</p>
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Date</th>
+                    <th>Amount, USD</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in user_expenses %}
+                <tr data-description="{{ expense.description }}" onclick="showDescription(this)">
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.category.name }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'edit_expense' expense.pk %}">Edit</a> 
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="mt-4">All Expenses</h2>
+        <p>Total Amount: {{ total_all_amount }}</p>
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Date</th>
+                    <th>Amount, USD</th>
+                    <th>Category</th>
+                    <th>User</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in all_expenses %}
+                <tr data-description="{{ expense.description }}" onclick="showDescription(this)" {% if expense.user == request.user %} style="background-color: #f0f8ff;" {% endif %}>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.category.name }}</td>
+                    <td>{{ expense.user.username }}</td>
+                    <td>
+                        {% if expense.user == request.user %}
+                            <a class="btn btn-sm btn-outline-primary" href="{% url 'edit_expense' expense.pk %}">Edit</a> 
+                            <a class="btn btn-sm btn-outline-danger" href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p><a class="btn btn-success mt-4" href="{% url 'add_expense' %}">Add Expense</a></p>
+    </div>
+
+    <!-- Analytics on the Right -->
+    <div class="col-md-4 offset-md-1">
+        <h2 class="mt-4">Analytics per User</h2>
+            <p>Users: 
+                {% for user in users %}
+                    {{ user.username }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        <table class="table table-bordered">
+            <thead class="table-success">
+                <tr>
+                    <th>User</th>
+                    <th>Total Amount, USD</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user_data in expenses_per_user %}
+                <tr {% if user_data.user__username == request.user.username %} style="background-color: #f0f8ff;" {% endif %}>
+                    <td>{{ user_data.user__username }}</td>
+                    <td>{{ user_data.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="mt-4">Analytics per Category</h2>
+        <table class="table table-bordered">
+            <thead class="table-success">
+                <tr>
+                    <th>Category</th>
+                    <th>Total Amount, USD</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category_data in expenses_per_category %}
+                <tr>
+                    <td>{{ category_data.category__name }}</td>
+                    <td>{{ category_data.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="descriptionModalLabel">Description</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="descriptionModalBody">
+        <!-- Description will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showDescription(row) {
+        var description = row.getAttribute('data-description');
+        document.getElementById('descriptionModalBody').innerText = description;
+        var myModal = new bootstrap.Modal(document.getElementById('descriptionModal'));
+        myModal.show();
+    }
+</script>
+{% endblock %}

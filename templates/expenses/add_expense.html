@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Add Expense</h2>
+    <div class="row mt-4 mb-3">
+        <div class="col-md-6 offset-md-3">
+            <h5>Current Exchange Rates to USD</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Turkish Lira (TRY): {{ exchange_rates.TRY }}</li>
+                <li class="list-group-item">Euro (EUR): {{ exchange_rates.EUR }}</li>
+                <li class="list-group-item">Russian Ruble (RUB): {{ exchange_rates.RUB }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_amount" class="form-label">Amount, USD</label>
+                    {{ form.amount|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Description</label>
+                    {{ form.description|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_category" class="form-label">Category</label>
+                    {{ form.category|add_class:"form-select" }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_date" class="form-label">Date</label>
+                    {{ form.date|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'expense_list' %}" class="btn btn-secondary">Back to list</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#id_date').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock %}
