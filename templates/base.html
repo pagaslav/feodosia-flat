@@ -11,7 +11,7 @@
 
     <style>
         .active-nav-link {
-            color: orange !important; /* Измените на нужный вам цвет */
+            color: orange !important; /* Цвет активного пункта меню */
         }
 
         .nav-link, .btn-link.nav-link {
@@ -27,6 +27,12 @@
 
         .btn-light.nav-link {
             color: white;
+        }
+
+        /* Ховер-эффект для ссылки в футере */
+        #footer-link:hover {
+            color: orange !important; /* Оранжевый цвет при наведении */
+            text-decoration: underline; /* Подчеркнуть текст при наведении */
         }
     </style>
 </head>
@@ -61,7 +67,10 @@
     </div>
 
     <footer class="bg-success text-white mt-5 p-4 text-center">
-        &copy; 2024 My Expense Tracker, Artem Bryzh
+        &copy; 2024
+        <a id="footer-link" href="https://www.linkedin.com/in/artem-bryzh-43109a176/" class="text-white" target="_blank" style="text-decoration: none;">
+            Artem Bryzh
+        </a>
     </footer>
 
     <!-- jQuery -->
