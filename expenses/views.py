@@ -9,6 +9,7 @@ from django.db.models import Sum
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .utils import get_exchange_rates
+from .models import Transfer
 
 
 
@@ -39,6 +40,9 @@ def expense_list(request):
 
     # Get all users
     users = User.objects.all()
+
+    # Transfers between sisters
+    transfers = Transfer.objects.all()
     
     context = {
         'user_expenses': user_expenses,
@@ -48,6 +52,7 @@ def expense_list(request):
         'expenses_per_user': expenses_per_user,
         'expenses_per_category': expenses_per_category,
         'users': users,
+        'transfers': transfers,
     }
     
     return render(request, 'expenses/expense_list.html', context)

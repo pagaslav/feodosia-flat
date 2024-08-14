@@ -16,3 +16,12 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.amount} - {self.category.name} ({self.user.username})"
+    
+class Transfer(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_transfers', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_transfers', on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"Transfer from {self.sender} to {self.receiver} - {self.amount}"
