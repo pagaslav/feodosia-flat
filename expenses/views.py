@@ -103,10 +103,13 @@ def edit_expense(request, pk):
 @login_required
 def delete_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
+    
     if request.method == 'POST':
         expense.delete()
         messages.success(request, 'Expense deleted successfully!')
         return redirect('expense_list')
+    
+    return render(request, 'expenses/delete_expense.html', {'expense': expense})
     
 
 def joke_view(request):
