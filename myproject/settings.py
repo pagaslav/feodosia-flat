@@ -133,3 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'  # URL страницы входа
 LOGIN_REDIRECT_URL = 'expense_list'  # URL, на который перенаправляется пользователь после входа
 LOGOUT_REDIRECT_URL = 'login'  # URL, на который перенаправляется пользователь после выхода
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
