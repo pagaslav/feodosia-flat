@@ -7,7 +7,7 @@
     <!-- Main Tables on the Left -->
     <div class="col-md-7">
         <h2 class="mt-4">My Expenses</h2>
-        <p>Total Amount: {{ total_user_amount }}</p>
+        <p>Total Amount: <strong>{{ total_user_amount }}</strong></p>
         <table class="table table-bordered table-hover">
             <thead class="table-success">
                 <tr>
@@ -33,7 +33,7 @@
         </table>
 
         <h2 class="mt-4">All Expenses</h2>
-        <p>Total Amount: {{ total_all_amount }}</p>
+        <p>Total Amount: <strong>{{ total_all_amount }}</strong></p>
         <table class="table table-bordered table-hover">
             <thead class="table-success">
                 <tr>
@@ -63,6 +63,7 @@
         </table>
 
         <h2 class="mt-4">Transfers Between Sisters</h2>
+        <p>Total Amount: <strong>{{ total_transfers_amount }}</strong></p>
         <table class="table table-bordered table-hover">
             <thead class="table-success">
                 <tr>

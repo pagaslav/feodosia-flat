@@ -43,6 +43,8 @@ def expense_list(request):
 
     # Transfers between sisters
     transfers = Transfer.objects.all()
+
+    total_transfers_amount = transfers.aggregate(Sum('amount'))['amount__sum'] 
     
     context = {
         'user_expenses': user_expenses,
@@ -53,6 +55,7 @@ def expense_list(request):
         'expenses_per_category': expenses_per_category,
         'users': users,
         'transfers': transfers,
+        'total_transfers_amount': total_transfers_amount,
     }
     
     return render(request, 'expenses/expense_list.html', context)
