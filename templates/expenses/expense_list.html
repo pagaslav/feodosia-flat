@@ -130,6 +130,20 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% if user.is_authenticated %}
+        <div class="alert alert-primary mt-5 text-center">
+            <h3>Привет, {{ user.username }}!<br> Хорошего тебе дня!</h3>
+        </div>
+        {% endif %}
+        <div class="alert alert-success mt-4">
+            <h3>Here's a Joke for You!</h3>
+            {% if joke.setup and joke.punchline %}
+                <p><strong>{{ joke.setup }}</strong></p>
+                <p>{{ joke.punchline }}</p>
+            {% else %}
+                <p>Sorry, no joke available at the moment.</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 

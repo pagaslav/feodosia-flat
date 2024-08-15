@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .utils import get_exchange_rates
 from .models import Transfer
+import requests
 
 
 
@@ -44,7 +45,11 @@ def expense_list(request):
     # Transfers between sisters
     transfers = Transfer.objects.all()
 
-    total_transfers_amount = transfers.aggregate(Sum('amount'))['amount__sum'] 
+    total_transfers_amount = transfers.aggregate(Sum('amount'))['amount__sum']
+
+    # Fetch a joke from the API
+    response = requests.get('https://official-joke-api.appspot.com/jokes/random')
+    joke = response.json() if response.status_code == 200 else {"setup": "No joke available", "punchline": "Please try again later."}
     
     context = {
         'user_expenses': user_expenses,
@@ -56,6 +61,7 @@ def expense_list(request):
         'users': users,
         'transfers': transfers,
         'total_transfers_amount': total_transfers_amount,
+        'joke': joke,
     }
     
     return render(request, 'expenses/expense_list.html', context)
@@ -101,4 +107,10 @@ def delete_expense(request, pk):
         expense.delete()
         messages.success(request, 'Expense deleted successfully!')
         return redirect('expense_list')
-    return render(request, 'expenses/delete_expense.html', {'expense': expense})
+    
+
+def joke_view(request):
+    response = requests.get('https://official-joke-api.appspot.com/jokes/random')
+    joke = response.json()
+    
+    return render(request, 'joke.html', {'joke': joke})
